@@ -199,6 +199,7 @@
 | file_path | VARCHAR(500) | ○ | 保存パス（ストレージ） |
 | file_type | ENUM | ○ | JPEG/PNG/PDF |
 | file_size_bytes | INTEGER | ○ | ファイルサイズ（バイト） |
+| merchant_name | VARCHAR(200) | | 取引先名（電子帳簿保存法の検索要件。手入力を基本、OCRは将来拡張） |
 | uploaded_at | DATETIME | ○ | アップロード日時（タイムスタンプ） |
 | uploaded_by | UUID | ○ | アップロード者ID |
 | is_deleted | BOOLEAN | ○ | 論理削除フラグ |
@@ -322,6 +323,66 @@
 8. 対象者へ精算完了通知が送信
 
 ---
+
+## 8A. DDD補足（設計の前提）
+
+本モジュールは「経費管理」コンテキストとして、経費申請〜承認〜精算の業務ルールと状態を所有する。承認タスク/通知は横断基盤（通知・ワークフロー）に委譲し、起点となる状態変化をイベントとして連携する。
+
+### 8A.1 ユビキタス言語（用語集）
+- **経費申請（Expense Claim）**: 経費の支出を精算するための申請。下書き〜申請〜承認〜精算の状態を持つ。
+- **領収書（Receipt）**: 経費申請に紐づく証憑ファイル。電子帳簿保存法の検索要件を満たすためのメタデータを保持する。
+- **承認（Approval）**: 承認者が申請内容を審査し承認/差し戻し/却下を決定する行為。
+- **精算（Settlement）**: 承認済み経費を月次でまとめ、給与計上または別途振込として処理すること。
+- **上限額（Monthly Limit）**: 申請者×カテゴリ×年月に対する月次上限（適用単位は運用で確定、実装前に明文化する）。
+- **閾値（Threshold）**: 領収書必須額や二段階承認の判定に用いる金額境界。
+
+### 8A.2 境界づけ（Bounded Context）と責務
+- **本コンテキストが所有する真実（SoT）**
+  - 経費申請の状態（ステータス、金額、税率、目的、案件紐付け等）
+  - 領収書のメタ情報（ファイル参照、検索用メタ、削除理由等）
+  - 月次精算結果（どの年月にいくら精算したか）
+- **参照のみ（他コンテキストSoT）**
+  - 申請者の基本属性・精算方法・振込先（Team B）
+  - 案件/プロジェクト情報（Team C）
+  - 承認タスク状態・通知送信履歴（Team E 通知・ワークフロー）
+
+### 8A.3 集約（Aggregate）案
+- **ExpenseClaim（経費申請）集約**
+  - 子エンティティ: Receipt（領収書）
+  - 主な状態: 下書き/申請中/差し戻し/承認済/精算済/却下
+- **ExpenseSettlement（精算）集約**
+  - 月次×対象者単位で精算合計を確定する（精算対象の申請はスナップショットまたは関連IDで追跡）
+
+### 8A.4 不変条件（ドメインルール）
+- **自己承認禁止**: 承認者は申請者本人と異なる必要がある
+- **物理削除禁止**: 監査証跡のため論理削除のみ（領収書含む）
+- **精算済みの扱い**: 精算済み経費の修正は管理者のみ、修正履歴（理由含む）を必須とする
+- **領収書必須**: 領収書必須額以上は領収書なしで提出不可（閾値は設定）
+
+### 8A.5 コマンド（操作）とドメインイベント（状態変化）
+- **コマンド例**
+  - `SaveDraftExpenseClaim`（下書き保存）
+  - `SubmitExpenseClaim`（提出）
+  - `RequestChangesExpenseClaim`（差し戻し）
+  - `ApproveExpenseClaim`（承認）
+  - `RejectExpenseClaim`（却下）
+  - `ExecuteMonthlyExpenseSettlement`（月次精算実行）
+- **イベント例（連携/監査の起点）**
+  - `ExpenseClaimSubmitted`
+  - `ExpenseClaimApproved`
+  - `ExpenseClaimRejected`
+  - `ExpenseClaimSettled`
+  - `ExpenseReceiptUploaded`
+
+### 8A.6 ステータス遷移（ステートマシン）
+| 現在 | 操作（コマンド） | 次 | 備考 |
+|---|---|---|---|
+| 下書き | SubmitExpenseClaim | 申請中 | 必須項目/領収書条件を満たすこと |
+| 申請中 | RequestChangesExpenseClaim | 差し戻し | 差戻理由必須 |
+| 差し戻し | SubmitExpenseClaim | 申請中 | 再提出 |
+| 申請中 | ApproveExpenseClaim | 承認済 | 自己承認禁止、閾値により二段階承認あり |
+| 申請中 | RejectExpenseClaim | 却下 | 却下理由必須 |
+| 承認済 | ExecuteMonthlyExpenseSettlement | 精算済 | 月次精算バッチに紐付く |
 
 ## 9. 制約・前提条件
 
