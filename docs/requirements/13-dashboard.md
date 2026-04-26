@@ -257,9 +257,9 @@ IT開発会社（SES・受託開発）の経営KPI・稼働状況・売上・案
 | name | VARCHAR(100) | ○ | テンプレート名 |
 | created_by | UUID | ○ | 作成ユーザーID |
 | data_source | ENUM | ○ | EMPLOYEE / PROJECT / INVOICE / ATTENDANCE |
-| columns | JSONB | ○ | 選択列定義（JSON配列） |
-| filters | JSONB | - | フィルター条件（JSON） |
-| sort_settings | JSONB | - | ソート条件（JSON） |
+| columns | JSON（配列/Map） | ○ | 選択列定義（JSON配列） |
+| filters | JSON（Map） | - | フィルター条件（JSON） |
+| sort_settings | JSON（Map） | - | ソート条件（JSON） |
 | is_shared | BOOLEAN | ○ | 他ユーザーへの共有フラグ |
 | created_at | TIMESTAMP | ○ | 作成日時 |
 | updated_at | TIMESTAMP | ○ | 最終更新日時 |
@@ -272,7 +272,7 @@ IT開発会社（SES・受託開発）の経営KPI・稼働状況・売上・案
 | report_type | VARCHAR(50) | ○ | レポート種別（occupancy/sales/project/custom） |
 | exported_by | UUID | ○ | 出力ユーザーID |
 | format | ENUM | ○ | CSV / PDF |
-| filter_params | JSONB | - | 適用したフィルター条件 |
+| filter_params | JSON（Map） | - | 適用したフィルター条件 |
 | file_path | VARCHAR(1024) | - | 出力ファイルのストレージパス |
 | status | ENUM | ○ | PENDING / COMPLETED / FAILED |
 | exported_at | TIMESTAMP | ○ | 出力実行日時 |

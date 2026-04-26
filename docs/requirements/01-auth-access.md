@@ -19,6 +19,11 @@
 | 含む | ログイン認証、MFA、SSO、ユーザーCRUD、ロール定義、権限設定、セッション管理、監査ログ、APIトークン管理 |
 | 含まない | 各業務モジュールの画面・データ自体（Team B〜E が担当）。権限チェックの実行ポイントは各モジュールに委譲するが、権限定義は本モジュールが管理する |
 
+### 1.2A 技術前提（READMEを正とする）
+- 認証基盤は **Amazon Cognito** を採用し、ログイン・MFA・SSO・トークン発行は Cognito の機能を優先利用する
+- アプリケーション側は Cognito が発行する JWT を検証し、**認可（RBAC/スコープ/自己のみ判定）**と監査を担う
+- 永続データストアは **Amazon DynamoDB** を前提とする（権限・監査・APIトークン・補助メタ情報等）
+
 ### 1.3 ユーザー区分
 
 ```
@@ -130,7 +135,7 @@
 | ID | 要件 |
 |----|------|
 | AUTH-001 | メールアドレス＋パスワードによるログイン認証を提供する |
-| AUTH-002 | パスワードはbcrypt（コストファクター12以上）でハッシュ化して保存する |
+| AUTH-002 | パスワード保管・検証は Cognito に委譲し、アプリケーション側でパスワードハッシュを保持しない |
 | AUTH-003 | ログイン失敗5回で当該アカウントを30分間ロックする（管理者は即時解除可能） |
 | AUTH-004 | ログイン失敗回数・ロック状態は管理画面で確認・解除できる |
 | AUTH-005 | ログイン成功時に最終ログイン日時・IPアドレスを記録する |
@@ -161,7 +166,7 @@
 
 | ID | 要件 |
 |----|------|
-| SES-001 | ログイン成功時にJWT（RS256署名）をHTTP-Only Secure Cookie で発行する |
+| SES-001 | ログイン成功時に Cognito 発行の JWT を用いて API アクセスする（トークンの保管方法はフロントエンド実装方針で決める） |
 | SES-002 | アクセストークン有効期限：15分 |
 | SES-003 | リフレッシュトークン有効期限：内部ユーザー8時間、外部ユーザー4時間 |
 | SES-004 | 操作なし（アイドル）30分でセッションを自動失効させ、ログイン画面へリダイレクトする |
@@ -311,14 +316,14 @@
 
 ## 5. データ項目定義
 
-### 5.1 usersテーブル
+### 5.1 users（アプリケーション側ユーザメタ情報）
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
 | id | UUID | Y | ユーザーID（主キー） |
 | email | VARCHAR(255) | Y | メールアドレス（一意） |
 | name | VARCHAR(100) | Y | 氏名 |
-| password_hash | VARCHAR(255) | N | パスワードハッシュ（SSO連携ユーザーはNULL） |
+| cognito_sub | VARCHAR(64) | Y | Cognito の subject（ユーザー一意識別子） |
 | user_type | ENUM('internal','external') | Y | ユーザー種別 |
 | status | ENUM('active','inactive','invited') | Y | アカウントステータス |
 | login_fail_count | INT | Y | 連続ログイン失敗回数 |
@@ -326,13 +331,14 @@
 | last_login_at | TIMESTAMP | N | 最終ログイン日時 |
 | last_login_ip | VARCHAR(45) | N | 最終ログインIPアドレス（IPv6対応） |
 | mfa_enabled | BOOLEAN | Y | MFA有効フラグ |
-| mfa_secret | VARCHAR(255) | N | TOTPシークレット（暗号化保存） |
 | password_changed_at | TIMESTAMP | N | 最終パスワード変更日時 |
 | created_at | TIMESTAMP | Y | 作成日時 |
 | updated_at | TIMESTAMP | Y | 更新日時 |
 | deleted_at | TIMESTAMP | N | 論理削除日時 |
 
-### 5.2 rolesテーブル
+> 補足: パスワード・MFAシークレット等の機微情報は Cognito 側が保持し、本システムは保持しない。
+
+### 5.2 roles
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
@@ -342,7 +348,7 @@
 | user_type | ENUM('internal','external') | Y | 対象ユーザー種別 |
 | description | TEXT | N | ロール説明 |
 
-### 5.3 user_rolesテーブル（多対多中間テーブル）
+### 5.3 user_roles（多対多中間）
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
@@ -351,7 +357,7 @@
 | assigned_at | TIMESTAMP | Y | 付与日時 |
 | assigned_by | UUID | Y | 付与した管理者のユーザーID |
 
-### 5.4 permissionsテーブル
+### 5.4 permissions
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
@@ -360,14 +366,14 @@
 | action | ENUM('create','read','update','delete','approve') | Y | アクション |
 | scope | ENUM('all','self') | Y | スコープ（all=全体、self=自己のみ） |
 
-### 5.5 role_permissionsテーブル（多対多中間テーブル）
+### 5.5 role_permissions（多対多中間）
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
 | role_id | UUID | Y | ロールID（FK: roles.id） |
 | permission_id | UUID | Y | 権限ID（FK: permissions.id） |
 
-### 5.6 sessionsテーブル
+### 5.6 sessions（補助的セッション管理）
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
@@ -381,7 +387,7 @@
 | expires_at | TIMESTAMP | Y | 有効期限 |
 | revoked_at | TIMESTAMP | N | 失効日時（NULLは有効） |
 
-### 5.7 audit_logsテーブル
+### 5.7 audit_logs
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
@@ -393,12 +399,12 @@
 | action_type | VARCHAR(100) | Y | 操作種別（例：USER_LOGIN, ROLE_UPDATED） |
 | resource_type | VARCHAR(100) | N | 対象リソース種別 |
 | resource_id | VARCHAR(255) | N | 対象リソースID |
-| before_value | JSONB | N | 変更前の値 |
-| after_value | JSONB | N | 変更後の値 |
+| before_value | JSON（Map） | N | 変更前の値 |
+| after_value | JSON（Map） | N | 変更後の値 |
 | ip_address | VARCHAR(45) | N | クライアントIPアドレス |
 | user_agent | TEXT | N | User-Agent |
 
-### 5.8 api_tokensテーブル
+### 5.8 api_tokens
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
@@ -406,7 +412,7 @@
 | name | VARCHAR(100) | Y | トークン名称 |
 | token_prefix | VARCHAR(20) | Y | プレフィックス（表示用） |
 | token_hash | VARCHAR(255) | Y | トークン全文のハッシュ |
-| scopes | JSONB | Y | 許可スコープ一覧 |
+| scopes | JSON（配列/Map） | Y | 許可スコープ一覧 |
 | created_by | UUID | Y | 発行した管理者ユーザーID |
 | last_used_at | TIMESTAMP | N | 最終使用日時 |
 | last_used_ip | VARCHAR(45) | N | 最終使用元IP |
@@ -614,8 +620,8 @@ Authorization: Bearer <APIトークン>
 | 制約 | 内容 |
 |------|------|
 | 言語・FW | バックエンドはTypeScript/Node.js（または他チームとの合意による）。フロントエンドはReact |
-| DB | PostgreSQL 15以上。監査ログは別スキーマまたは別DBに分離することを推奨 |
-| クラウド | AWS を想定。Cognito の利用可否は初期設計フェーズで判断（利点：SSOが容易。欠点：カスタマイズ制限） |
+| DB | DynamoDB を前提（アクセスパターン先行でテーブル設計）。監査ログは書き込み専用・削除不可（Immutable）を満たす |
+| クラウド | AWS を想定。認証は Cognito を正とする |
 | 認証プロトコル | OpenID Connect / OAuth 2.0 準拠 |
 
 ### 9.2 業務的前提条件
@@ -638,7 +644,6 @@ Authorization: Bearer <APIトークン>
 
 | 項目 | 内容 | 期限目安 |
 |------|------|---------|
-| AWS Cognito採用可否 | 採用する場合はSSOおよびMFAの実装方針が変わる | 設計フェーズ開始前 |
 | ロール追加の承認フロー | 管理者のみか、複数管理者の承認を要するか | 要件定義完了前 |
 | 外部ユーザーのMFA強制 | 将来的に必須化するかどうか | 運用フェーズで判断 |
 | SCIM 2.0 対応時期 | 社員数拡大のタイミングで優先度を再評価 | 次フェーズで検討 |

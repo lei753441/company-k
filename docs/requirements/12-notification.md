@@ -274,7 +274,7 @@
 
 ```
 POST /api/workflows/requests
-Authorization: Bearer {JWT}
+Authorization: Bearer {Service API Token}
 Content-Type: application/json
 
 {
@@ -300,7 +300,7 @@ Content-Type: application/json
 
 ```
 POST /api/notifications/send
-Authorization: Bearer {JWT}
+Authorization: Bearer {Service API Token}
 Content-Type: application/json
 
 {
@@ -312,6 +312,9 @@ Content-Type: application/json
   "channels": ["IN_APP", "EMAIL"]
 }
 ```
+
+> 補足: ここでの `Service API Token` はモジュール間のサーバー間通信向けトークン（Team Aが発行・管理）を想定する。  
+> ユーザー操作（通知一覧の閲覧、承認タスク操作など）はユーザーJWTで保護するが、**業務モジュールからの「発行」API**はサーバー間認証を前提とする。
 
 ### 7.3 連携元モジュール別インターフェース
 
