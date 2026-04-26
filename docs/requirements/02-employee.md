@@ -131,72 +131,75 @@ IT開発会社（SES・受託開発）における社員の基本情報・雇用
 
 ## 3. データ項目定義
 
-### 3.1 社員マスタ（employees テーブル）
+> 本章のデータ定義は DynamoDB を前提とした「論理データ定義（アイテム/属性）」である。  
+> 物理テーブル設計（PK/SK/GSI）はアクセスパターンに基づき別途確定する。
 
-| 項目名 | 論理名 | 型 | 必須 | 備考 |
+### 3.1 社員マスタ（Employee エンティティ / DynamoDB Item）
+
+| 項目名 | 論理名 | 属性型 | 必須 | 備考 |
 |--------|--------|-----|------|------|
-| employee_id | 社員ID | VARCHAR(20) | 必須 | システム自動採番（EMP-YYYYMMDD-0001形式） |
-| last_name | 姓 | VARCHAR(50) | 必須 | |
-| first_name | 名 | VARCHAR(50) | 必須 | |
-| last_name_kana | 姓（カナ） | VARCHAR(50) | 必須 | |
-| first_name_kana | 名（カナ） | VARCHAR(50) | 必須 | |
-| birth_date | 生年月日 | DATE | 必須 | |
-| gender | 性別 | ENUM | 任意 | male/female/other/prefer_not_to_say |
-| email_company | 会社メールアドレス | VARCHAR(255) | 必須 | ユニーク制約 |
-| email_private | 個人メールアドレス | VARCHAR(255) | 任意 | |
-| phone_company | 会社携帯番号 | VARCHAR(20) | 任意 | |
-| phone_private | 個人携帯番号 | VARCHAR(20) | 任意 | |
-| postal_code | 郵便番号 | VARCHAR(10) | 任意 | |
-| address_pref | 都道府県 | VARCHAR(20) | 任意 | |
-| address_city | 市区町村 | VARCHAR(100) | 任意 | |
-| address_detail | 番地・建物名 | VARCHAR(200) | 任意 | |
-| employment_type | 雇用形態 | ENUM | 必須 | full_time/contract/part_time |
-| hire_date | 入社日 | DATE | 必須 | |
-| retirement_date | 退職日 | DATE | 任意 | |
-| status | 在籍ステータス | ENUM | 必須 | active/on_leave/retiring/retired |
-| department_id | 部署ID | BIGINT | 必須 | 部署マスタ外部キー |
-| position_id | 役職ID | BIGINT | 任意 | 役職マスタ外部キー |
-| manager_employee_id | 上長社員ID | VARCHAR(20) | 任意 | 自己参照外部キー |
-| bank_name | 銀行名 | VARCHAR(100) | 任意 | 暗号化保存 |
-| bank_branch | 支店名 | VARCHAR(100) | 任意 | 暗号化保存 |
-| bank_account_type | 口座種別 | ENUM | 任意 | checking/savings |
-| bank_account_number | 口座番号 | VARCHAR(20) | 任意 | 暗号化保存 |
-| bank_account_holder | 口座名義 | VARCHAR(100) | 任意 | 暗号化保存 |
-| mynumber | マイナンバー | VARCHAR(20) | 任意 | 暗号化保存、アクセスログ必須 |
-| created_at | 作成日時 | TIMESTAMP | 必須 | |
-| updated_at | 更新日時 | TIMESTAMP | 必須 | |
-| created_by | 作成者社員ID | VARCHAR(20) | 必須 | |
-| updated_by | 更新者社員ID | VARCHAR(20) | 必須 | |
+| employee_id | 社員ID | String | 必須 | システム自動採番（EMP-YYYYMMDD-0001形式） |
+| last_name | 姓 | String | 必須 | |
+| first_name | 名 | String | 必須 | |
+| last_name_kana | 姓（カナ） | String | 必須 | |
+| first_name_kana | 名（カナ） | String | 必須 | |
+| birth_date | 生年月日 | String | 必須 | YYYY-MM-DD |
+| gender | 性別 | String | 任意 | male/female/other/prefer_not_to_say |
+| email_company | 会社メールアドレス | String | 必須 | 一意性はアプリ層で担保 |
+| email_private | 個人メールアドレス | String | 任意 | |
+| phone_company | 会社携帯番号 | String | 任意 | |
+| phone_private | 個人携帯番号 | String | 任意 | |
+| postal_code | 郵便番号 | String | 任意 | |
+| address_pref | 都道府県 | String | 任意 | |
+| address_city | 市区町村 | String | 任意 | |
+| address_detail | 番地・建物名 | String | 任意 | |
+| employment_type | 雇用形態 | String | 必須 | full_time/contract/part_time |
+| hire_date | 入社日 | String | 必須 | YYYY-MM-DD |
+| retirement_date | 退職日 | String | 任意 | YYYY-MM-DD |
+| status | 在籍ステータス | String | 必須 | active/on_leave/retiring/retired |
+| department_id | 部署ID | String | 必須 | 参照ID（Department） |
+| position_id | 役職ID | String | 任意 | 参照ID（Position） |
+| manager_employee_id | 上長社員ID | String | 任意 | 参照ID（Employee） |
+| bank_name | 銀行名 | String | 任意 | 暗号化保存 |
+| bank_branch | 支店名 | String | 任意 | 暗号化保存 |
+| bank_account_type | 口座種別 | String | 任意 | checking/savings |
+| bank_account_number | 口座番号 | String | 任意 | 暗号化保存 |
+| bank_account_holder | 口座名義 | String | 任意 | 暗号化保存 |
+| mynumber | マイナンバー | String | 任意 | 暗号化保存、アクセスログ必須 |
+| created_at | 作成日時 | String | 必須 | ISO8601 |
+| updated_at | 更新日時 | String | 必須 | ISO8601 |
+| created_by | 作成者社員ID | String | 必須 | 参照ID（Employee） |
+| updated_by | 更新者社員ID | String | 必須 | 参照ID（Employee） |
 
-### 3.2 緊急連絡先（employee_emergency_contacts テーブル）
+### 3.2 緊急連絡先（EmployeeEmergencyContact エンティティ / DynamoDB Item）
 
-| 項目名 | 論理名 | 型 | 必須 | 備考 |
+| 項目名 | 論理名 | 属性型 | 必須 | 備考 |
 |--------|--------|-----|------|------|
-| id | ID | BIGINT | 必須 | PK、自動採番 |
-| employee_id | 社員ID | VARCHAR(20) | 必須 | FK |
-| name | 氏名 | VARCHAR(100) | 必須 | |
-| relationship | 続柄 | VARCHAR(50) | 必須 | |
-| phone | 電話番号 | VARCHAR(20) | 必須 | |
-| priority | 優先順位 | INT | 必須 | 1が最優先 |
+| id | ID | String | 必須 | 一意ID |
+| employee_id | 社員ID | String | 必須 | 参照ID（Employee） |
+| name | 氏名 | String | 必須 | |
+| relationship | 続柄 | String | 必須 | |
+| phone | 電話番号 | String | 必須 | |
+| priority | 優先順位 | Number | 必須 | 1が最優先 |
 
-### 3.3 部署マスタ（departments テーブル）
+### 3.3 部署マスタ（Department エンティティ / DynamoDB Item）
 
-| 項目名 | 論理名 | 型 | 必須 | 備考 |
+| 項目名 | 論理名 | 属性型 | 必須 | 備考 |
 |--------|--------|-----|------|------|
-| department_id | 部署ID | BIGINT | 必須 | PK |
-| name | 部署名 | VARCHAR(100) | 必須 | |
-| parent_department_id | 親部署ID | BIGINT | 任意 | 階層構造に対応 |
-| manager_employee_id | 部署長社員ID | VARCHAR(20) | 任意 | FK |
-| is_active | 有効フラグ | BOOLEAN | 必須 | |
+| department_id | 部署ID | String | 必須 | 一意ID |
+| name | 部署名 | String | 必須 | |
+| parent_department_id | 親部署ID | String | 任意 | 階層構造に対応 |
+| manager_employee_id | 部署長社員ID | String | 任意 | 参照ID（Employee） |
+| is_active | 有効フラグ | Boolean | 必須 | |
 
-### 3.4 役職マスタ（positions テーブル）
+### 3.4 役職マスタ（Position エンティティ / DynamoDB Item）
 
-| 項目名 | 論理名 | 型 | 必須 | 備考 |
+| 項目名 | 論理名 | 属性型 | 必須 | 備考 |
 |--------|--------|-----|------|------|
-| position_id | 役職ID | BIGINT | 必須 | PK |
-| name | 役職名 | VARCHAR(100) | 必須 | 例: エンジニア、シニアエンジニア、PM、部長 |
-| rank | 等級 | INT | 任意 | 昇格管理用 |
-| is_active | 有効フラグ | BOOLEAN | 必須 | |
+| position_id | 役職ID | String | 必須 | 一意ID |
+| name | 役職名 | String | 必須 | 例: エンジニア、シニアエンジニア、PM、部長 |
+| rank | 等級 | Number | 任意 | 昇格管理用 |
+| is_active | 有効フラグ | Boolean | 必須 | |
 
 ---
 

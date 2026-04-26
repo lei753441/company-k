@@ -79,67 +79,70 @@ IT開発会社（SES・受託開発）の営業活動を支援するため、顧
 
 ## 3. データ項目定義
 
-### 3.1 企業（companies）テーブル
+> 本章のデータ定義は DynamoDB を前提とした「論理データ定義（アイテム/属性）」である。  
+> 物理テーブル設計（PK/SK/GSI）はアクセスパターンに基づき別途確定する。
 
-| 項目名 | 型 | 必須 | 説明 |
+### 3.1 企業（Company エンティティ / DynamoDB Item）
+
+| 項目名 | 属性型 | 必須 | 説明 |
 |--------|----|------|------|
-| id | UUID | ○ | 主キー |
-| company_type | ENUM | ○ | customer / partner / both |
-| name | VARCHAR(255) | ○ | 企業名（法人格含む） |
-| name_kana | VARCHAR(255) | - | 企業名カナ |
-| corporate_number | VARCHAR(13) | - | 法人番号（重複チェック用） |
-| industry | VARCHAR(100) | - | 業種 |
-| prefecture | VARCHAR(20) | - | 都道府県 |
-| address | TEXT | - | 住所（都道府県以降） |
-| phone | VARCHAR(20) | - | 代表電話番号 |
-| website_url | VARCHAR(500) | - | WebサイトURL |
-| status | ENUM | ○ | prospect / active / dormant / suspended |
-| tags | JSON | - | 任意タグ配列 |
-| notes | TEXT | - | 社内メモ |
-| created_by | UUID | ○ | 登録者（users.id） |
-| created_at | TIMESTAMP | ○ | 登録日時 |
-| updated_at | TIMESTAMP | ○ | 更新日時 |
-| deleted_at | TIMESTAMP | - | 論理削除日時 |
+| id | String | ○ | 企業ID |
+| company_type | String | ○ | customer / partner / both |
+| name | String | ○ | 企業名（法人格含む） |
+| name_kana | String | - | 企業名カナ |
+| corporate_number | String | - | 法人番号（重複チェック用） |
+| industry | String | - | 業種 |
+| prefecture | String | - | 都道府県 |
+| address | String | - | 住所（都道府県以降） |
+| phone | String | - | 代表電話番号 |
+| website_url | String | - | WebサイトURL |
+| status | String | ○ | prospect / active / dormant / suspended |
+| tags | List（String） | - | 任意タグ配列 |
+| notes | String | - | 社内メモ |
+| created_by | String | ○ | 登録者ユーザーID（参照ID） |
+| created_at | String | ○ | 登録日時（ISO8601） |
+| updated_at | String | ○ | 更新日時（ISO8601） |
+| deleted_at | String | - | 論理削除日時（ISO8601） |
 
-### 3.2 担当者（contacts）テーブル
+### 3.2 担当者（Contact エンティティ / DynamoDB Item）
 
-| 項目名 | 型 | 必須 | 説明 |
+| 項目名 | 属性型 | 必須 | 説明 |
 |--------|----|------|------|
-| id | UUID | ○ | 主キー |
-| company_id | UUID | ○ | companies.id（主所属） |
-| last_name | VARCHAR(50) | ○ | 姓 |
-| first_name | VARCHAR(50) | ○ | 名 |
-| last_name_kana | VARCHAR(50) | - | 姓カナ |
-| first_name_kana | VARCHAR(50) | - | 名カナ |
-| department | VARCHAR(100) | - | 部署 |
-| title | VARCHAR(100) | - | 役職 |
-| email | VARCHAR(255) | - | メールアドレス |
-| phone | VARCHAR(20) | - | 直通電話 |
-| mobile | VARCHAR(20) | - | 携帯電話 |
-| status | ENUM | ○ | active / resigned |
-| notes | TEXT | - | 社内メモ |
-| created_at | TIMESTAMP | ○ | 登録日時 |
-| updated_at | TIMESTAMP | ○ | 更新日時 |
-| deleted_at | TIMESTAMP | - | 論理削除日時 |
+| id | String | ○ | 担当者ID |
+| company_id | String | ○ | 企業ID（参照ID） |
+| last_name | String | ○ | 姓 |
+| first_name | String | ○ | 名 |
+| last_name_kana | String | - | 姓カナ |
+| first_name_kana | String | - | 名カナ |
+| department | String | - | 部署 |
+| title | String | - | 役職 |
+| email | String | - | メールアドレス |
+| phone | String | - | 直通電話 |
+| mobile | String | - | 携帯電話 |
+| status | String | ○ | active / resigned |
+| notes | String | - | 社内メモ |
+| created_at | String | ○ | 登録日時（ISO8601） |
+| updated_at | String | ○ | 更新日時（ISO8601） |
+| deleted_at | String | - | 論理削除日時（ISO8601） |
 
-### 3.3 商談履歴（interactions）テーブル
+### 3.3 商談履歴（Interaction エンティティ / DynamoDB Item）
 
-| 項目名 | 型 | 必須 | 説明 |
+| 項目名 | 属性型 | 必須 | 説明 |
 |--------|----|------|------|
-| id | UUID | ○ | 主キー |
-| company_id | UUID | ○ | companies.id |
-| project_id | UUID | - | projects.id（案件ひも付け、任意） |
-| interaction_type | ENUM | ○ | meeting / online / phone / email / other |
-| interacted_at | TIMESTAMP | ○ | 商談日時 |
-| our_attendees | JSON | ○ | 自社参加者（users.id配列） |
-| client_attendees | JSON | - | 顧客側参加者（contacts.id配列） |
-| subject | VARCHAR(255) | ○ | 件名 |
-| content | TEXT | ○ | 商談内容 |
-| next_action | TEXT | - | 次のアクション |
-| follow_up_date | DATE | - | フォローアップ予定日 |
-| created_by | UUID | ○ | 記録者（users.id） |
-| created_at | TIMESTAMP | ○ | 登録日時 |
-| updated_at | TIMESTAMP | ○ | 更新日時 |
+| id | String | ○ | 商談ID |
+| company_id | String | ○ | 企業ID（参照ID） |
+| project_id | String | - | 案件ID（参照ID、任意） |
+| interaction_type | String | ○ | meeting / online / phone / email / other |
+| interacted_at | String | ○ | 商談日時（ISO8601） |
+| our_attendees | List（String） | ○ | 自社参加者ユーザーID配列（参照ID） |
+| client_attendees | List（String） | - | 顧客側担当者ID配列（参照ID） |
+| subject | String | ○ | 件名 |
+| content | String | ○ | 商談内容 |
+| next_action | String | - | 次のアクション |
+| follow_up_date | String | - | フォローアップ予定日（YYYY-MM-DD） |
+| created_by | String | ○ | 記録者ユーザーID（参照ID） |
+| created_at | String | ○ | 登登録日時（ISO8601） |
+| updated_at | String | ○ | 更新日時（ISO8601） |
 
 ---
 
