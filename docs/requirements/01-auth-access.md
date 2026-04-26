@@ -352,8 +352,8 @@
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
-| user_id | UUID | Y | ユーザーID（FK: users.id） |
-| role_id | UUID | Y | ロールID（FK: roles.id） |
+| user_id | UUID | Y | ユーザーID（参照ID） |
+| role_id | UUID | Y | ロールID（参照ID） |
 | assigned_at | TIMESTAMP | Y | 付与日時 |
 | assigned_by | UUID | Y | 付与した管理者のユーザーID |
 
@@ -370,15 +370,15 @@
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
-| role_id | UUID | Y | ロールID（FK: roles.id） |
-| permission_id | UUID | Y | 権限ID（FK: permissions.id） |
+| role_id | UUID | Y | ロールID（参照ID） |
+| permission_id | UUID | Y | 権限ID（参照ID） |
 
 ### 5.6 sessions（補助的セッション管理）
 
 | カラム名 | 型 | 必須 | 説明 |
 |---------|-----|------|------|
 | id | UUID | Y | セッションID（主キー） |
-| user_id | UUID | Y | ユーザーID（FK: users.id） |
+| user_id | UUID | Y | ユーザーID（参照ID） |
 | refresh_token_hash | VARCHAR(255) | Y | リフレッシュトークンのハッシュ |
 | device_info | TEXT | N | User-Agent等のデバイス情報 |
 | ip_address | VARCHAR(45) | Y | ログイン元IPアドレス |
@@ -386,6 +386,8 @@
 | last_used_at | TIMESTAMP | Y | 最終使用日時 |
 | expires_at | TIMESTAMP | Y | 有効期限 |
 | revoked_at | TIMESTAMP | N | 失効日時（NULLは有効） |
+
+> 補足: DynamoDB 前提のため、上記は「論理データ項目」を示す。参照整合性はDBの外部キーではなく、アプリケーション層のバリデーションとイベント連携で担保する。
 
 ### 5.7 audit_logs
 
