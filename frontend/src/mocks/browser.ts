@@ -4,5 +4,6 @@ import { departmentHandlers } from './handlers/departments'
 import { skillHandlers } from './handlers/skills'
 import { projectHandlers } from './handlers/projects'
 import { customerHandlers } from './handlers/customers'
+import { attendanceHandlers } from './handlers/attendance'
 
-export const worker = setupWorker(...employeeHandlers, ...departmentHandlers, ...skillHandlers, ...projectHandlers, ...customerHandlers)
+export const worker = setupWorker(...employeeHandlers, ...departmentHandlers, ...skillHandlers, ...projectHandlers, ...customerHandlers, ...attendanceHandlers)

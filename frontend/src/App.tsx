@@ -26,6 +26,14 @@ const CustomerDetailPage = lazy(() => import('@/features/customers/pages/Custome
 const CustomerFormPage = lazy(() => import('@/features/customers/pages/CustomerFormPage'))
 const FollowUpPage = lazy(() => import('@/features/customers/pages/FollowUpPage'))
 
+const ClockPage = lazy(() => import('@/features/attendance/pages/ClockPage'))
+const TimesheetListPage = lazy(() => import('@/features/attendance/pages/TimesheetListPage'))
+const TimesheetDetailPage = lazy(() => import('@/features/attendance/pages/TimesheetDetailPage'))
+const ApprovalListPage = lazy(() => import('@/features/attendance/pages/ApprovalListPage'))
+const MonthlySummaryPage = lazy(() => import('@/features/attendance/pages/MonthlySummaryPage'))
+const MonthlyClosePage = lazy(() => import('@/features/attendance/pages/MonthlyClosePage'))
+const LeaveListPage = lazy(() => import('@/features/attendance/pages/LeaveListPage'))
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -55,6 +63,13 @@ export default function App() {
             <Route path="customers/followup" element={<FollowUpPage />} />
             <Route path="customers/:id" element={<CustomerDetailPage />} />
             <Route path="customers/:id/edit" element={<CustomerFormPage mode="edit" />} />
+            <Route path="attendance/clock" element={<ClockPage />} />
+            <Route path="attendance/timesheets" element={<TimesheetListPage />} />
+            <Route path="attendance/timesheets/:id" element={<TimesheetDetailPage />} />
+            <Route path="attendance/approval" element={<ApprovalListPage />} />
+            <Route path="attendance/summary" element={<MonthlySummaryPage />} />
+            <Route path="attendance/close" element={<MonthlyClosePage />} />
+            <Route path="attendance/leaves" element={<LeaveListPage />} />
           </Route>
         </Routes>
       </Suspense>
