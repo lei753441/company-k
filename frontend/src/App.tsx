@@ -1,0 +1,34 @@
+import { lazy, Suspense } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AppLayout } from '@/components/layout/AppLayout'
+
+const EmployeeListPage = lazy(() => import('@/features/employees/pages/EmployeeListPage'))
+const EmployeeDetailPage = lazy(() => import('@/features/employees/pages/EmployeeDetailPage'))
+const EmployeeNewPage = lazy(() => import('@/features/employees/pages/EmployeeNewPage'))
+const EmployeeEditPage = lazy(() => import('@/features/employees/pages/EmployeeEditPage'))
+const EmployeeRetirePage = lazy(() => import('@/features/employees/pages/EmployeeRetirePage'))
+const EmployeeLeavePage = lazy(() => import('@/features/employees/pages/EmployeeLeavePage'))
+const EmployeeHistoryPage = lazy(() => import('@/features/employees/pages/EmployeeHistoryPage'))
+const DepartmentPage = lazy(() => import('@/features/employees/pages/DepartmentPage'))
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<div className="p-8 text-slate-500">Loading...</div>}>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route index element={<Navigate to="/employees" replace />} />
+            <Route path="employees" element={<EmployeeListPage />} />
+            <Route path="employees/new" element={<EmployeeNewPage />} />
+            <Route path="employees/:id" element={<EmployeeDetailPage />} />
+            <Route path="employees/:id/edit" element={<EmployeeEditPage />} />
+            <Route path="employees/:id/retire" element={<EmployeeRetirePage />} />
+            <Route path="employees/:id/leave" element={<EmployeeLeavePage />} />
+            <Route path="employees/:id/history" element={<EmployeeHistoryPage />} />
+            <Route path="departments" element={<DepartmentPage />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  )
+}
