@@ -21,6 +21,11 @@ const ProjectListPage = lazy(() => import('@/features/projects/pages/ProjectList
 const ProjectDetailPage = lazy(() => import('@/features/projects/pages/ProjectDetailPage'))
 const ProjectFormPage = lazy(() => import('@/features/projects/pages/ProjectFormPage'))
 
+const CustomerListPage = lazy(() => import('@/features/customers/pages/CustomerListPage'))
+const CustomerDetailPage = lazy(() => import('@/features/customers/pages/CustomerDetailPage'))
+const CustomerFormPage = lazy(() => import('@/features/customers/pages/CustomerFormPage'))
+const FollowUpPage = lazy(() => import('@/features/customers/pages/FollowUpPage'))
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -45,6 +50,11 @@ export default function App() {
             <Route path="projects/new" element={<ProjectFormPage mode="new" />} />
             <Route path="projects/:id" element={<ProjectDetailPage />} />
             <Route path="projects/:id/edit" element={<ProjectFormPage mode="edit" />} />
+            <Route path="customers" element={<CustomerListPage />} />
+            <Route path="customers/new" element={<CustomerFormPage mode="new" />} />
+            <Route path="customers/followup" element={<FollowUpPage />} />
+            <Route path="customers/:id" element={<CustomerDetailPage />} />
+            <Route path="customers/:id/edit" element={<CustomerFormPage mode="edit" />} />
           </Route>
         </Routes>
       </Suspense>

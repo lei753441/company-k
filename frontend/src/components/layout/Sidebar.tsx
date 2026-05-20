@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Users, Building2, FileText, Activity, Search, Briefcase } from 'lucide-react'
+import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navGroups = [
@@ -22,6 +22,13 @@ const navGroups = [
     label: '案件管理',
     items: [
       { to: '/projects', label: '案件一覧', icon: Briefcase },
+    ],
+  },
+  {
+    label: '顧客管理',
+    items: [
+      { to: '/customers', label: '顧客・取引先', icon: Building },
+      { to: '/customers/followup', label: 'フォローアップ', icon: Bell },
     ],
   },
 ]
