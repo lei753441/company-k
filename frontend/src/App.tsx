@@ -17,6 +17,10 @@ const SkillEditPage = lazy(() => import('@/features/skills/pages/SkillEditPage')
 const AvailabilityListPage = lazy(() => import('@/features/skills/pages/AvailabilityListPage'))
 const SkillSearchPage = lazy(() => import('@/features/skills/pages/SkillSearchPage'))
 
+const ProjectListPage = lazy(() => import('@/features/projects/pages/ProjectListPage'))
+const ProjectDetailPage = lazy(() => import('@/features/projects/pages/ProjectDetailPage'))
+const ProjectFormPage = lazy(() => import('@/features/projects/pages/ProjectFormPage'))
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -37,6 +41,10 @@ export default function App() {
             <Route path="skills/:id" element={<SkillSheetPage />} />
             <Route path="skills/:id/edit" element={<SkillEditPage />} />
             <Route path="availability" element={<AvailabilityListPage />} />
+            <Route path="projects" element={<ProjectListPage />} />
+            <Route path="projects/new" element={<ProjectFormPage mode="new" />} />
+            <Route path="projects/:id" element={<ProjectDetailPage />} />
+            <Route path="projects/:id/edit" element={<ProjectFormPage mode="edit" />} />
           </Route>
         </Routes>
       </Suspense>
