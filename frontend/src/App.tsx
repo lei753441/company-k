@@ -11,6 +11,12 @@ const EmployeeLeavePage = lazy(() => import('@/features/employees/pages/Employee
 const EmployeeHistoryPage = lazy(() => import('@/features/employees/pages/EmployeeHistoryPage'))
 const DepartmentPage = lazy(() => import('@/features/employees/pages/DepartmentPage'))
 
+const SkillListPage = lazy(() => import('@/features/skills/pages/SkillListPage'))
+const SkillSheetPage = lazy(() => import('@/features/skills/pages/SkillSheetPage'))
+const SkillEditPage = lazy(() => import('@/features/skills/pages/SkillEditPage'))
+const AvailabilityListPage = lazy(() => import('@/features/skills/pages/AvailabilityListPage'))
+const SkillSearchPage = lazy(() => import('@/features/skills/pages/SkillSearchPage'))
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -26,6 +32,11 @@ export default function App() {
             <Route path="employees/:id/leave" element={<EmployeeLeavePage />} />
             <Route path="employees/:id/history" element={<EmployeeHistoryPage />} />
             <Route path="departments" element={<DepartmentPage />} />
+            <Route path="skills" element={<SkillListPage />} />
+            <Route path="skills/search" element={<SkillSearchPage />} />
+            <Route path="skills/:id" element={<SkillSheetPage />} />
+            <Route path="skills/:id/edit" element={<SkillEditPage />} />
+            <Route path="availability" element={<AvailabilityListPage />} />
           </Route>
         </Routes>
       </Suspense>
