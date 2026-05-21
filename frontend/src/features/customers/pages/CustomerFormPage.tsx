@@ -114,7 +114,7 @@ export default function CustomerFormPage({ mode }: Props) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>種別 *</Label>
-                <Select value={watch('company_type')} onValueChange={(v) => setValue('company_type', v as CompanyType)}>
+                <Select value={watch('company_type')} onValueChange={(v) => setValue('company_type', (v ?? '') as CompanyType)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="customer">顧客</SelectItem>
@@ -125,7 +125,7 @@ export default function CustomerFormPage({ mode }: Props) {
               </div>
               <div>
                 <Label>取引ステータス *</Label>
-                <Select value={watch('status')} onValueChange={(v) => setValue('status', v as CompanyStatus)}>
+                <Select value={watch('status')} onValueChange={(v) => setValue('status', (v ?? '') as CompanyStatus)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="prospect">見込み</SelectItem>
@@ -164,7 +164,7 @@ export default function CustomerFormPage({ mode }: Props) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>都道府県</Label>
-                <Select value={watch('prefecture') || ALL} onValueChange={(v) => setValue('prefecture', v === ALL ? '' : v)}>
+                <Select value={watch('prefecture') || ALL} onValueChange={(v) => setValue('prefecture', (v ?? '') === ALL ? '' : (v ?? undefined))}>
                   <SelectTrigger><SelectValue placeholder="選択" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value={ALL}>選択してください</SelectItem>

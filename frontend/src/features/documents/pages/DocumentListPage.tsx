@@ -17,7 +17,6 @@ import { Plus } from 'lucide-react'
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 
-const ALL = '_all_'
 const categoryOrder: DocumentCategory[] = ['contract', 'invoice', 'skill_sheet', 'timesheet', 'proposal', 'other']
 
 export default function DocumentListPage() {

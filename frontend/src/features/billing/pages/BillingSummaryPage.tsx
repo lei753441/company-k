@@ -36,7 +36,7 @@ export default function BillingSummaryPage() {
         <h1 className="text-2xl font-bold">月次集計</h1>
         <div className="w-40">
           <Label>年月</Label>
-          <Select value={yearMonth} onValueChange={setYearMonth}>
+          <Select value={yearMonth} onValueChange={(v) => setYearMonth(v ?? '')}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
               {yearMonthOptions.map((ym) => (

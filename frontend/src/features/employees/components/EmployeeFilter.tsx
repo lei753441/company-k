@@ -39,7 +39,7 @@ export function EmployeeFilter({ params, departments, onChange }: Props) {
         <Label htmlFor="status">在籍ステータス</Label>
         <Select
           value={toSelectValue(params.status)}
-          onValueChange={(v) => update({ status: fromSelectValue(v) as EmployeeStatus | '' })}
+          onValueChange={(v) => update({ status: fromSelectValue(v ?? '') as EmployeeStatus | '' })}
         >
           <SelectTrigger id="status">
             <SelectValue placeholder="すべて" />
@@ -58,7 +58,7 @@ export function EmployeeFilter({ params, departments, onChange }: Props) {
         <Label htmlFor="dept">部署</Label>
         <Select
           value={toSelectValue(params.department_id)}
-          onValueChange={(v) => update({ department_id: fromSelectValue(v) })}
+          onValueChange={(v) => update({ department_id: fromSelectValue(v ?? '') })}
         >
           <SelectTrigger id="dept">
             <SelectValue placeholder="すべて" />
@@ -76,7 +76,7 @@ export function EmployeeFilter({ params, departments, onChange }: Props) {
         <Label htmlFor="employment">雇用形態</Label>
         <Select
           value={toSelectValue(params.employment_type)}
-          onValueChange={(v) => update({ employment_type: fromSelectValue(v) as EmploymentType | '' })}
+          onValueChange={(v) => update({ employment_type: fromSelectValue(v ?? '') as EmploymentType | '' })}
         >
           <SelectTrigger id="employment">
             <SelectValue placeholder="すべて" />

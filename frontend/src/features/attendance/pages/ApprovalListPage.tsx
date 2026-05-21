@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { TimesheetStatusBadge, timesheetStatusLabel } from '../components/AttendanceBadge'
 import { useTimesheets } from '../api/attendanceApi'
 import type { TimesheetStatus } from '@/types/attendance'
@@ -52,7 +52,7 @@ export default function ApprovalListPage() {
       <div className="flex flex-wrap gap-4 p-4 bg-white rounded-lg border">
         <div className="w-40">
           <Label>年月</Label>
-          <Select value={yearMonth} onValueChange={setYearMonth}>
+          <Select value={yearMonth} onValueChange={(v) => setYearMonth(v ?? '')}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
               {yearMonthOptions.map((ym) => (
@@ -65,7 +65,7 @@ export default function ApprovalListPage() {
           <Label>ステータス</Label>
           <Select
             value={status || ALL}
-            onValueChange={(v) => setStatus(v === ALL ? '' : (v as TimesheetStatus))}
+            onValueChange={(v) => setStatus((v ?? '') === ALL ? '' : ((v ?? '') as TimesheetStatus))}
           >
             <SelectTrigger><SelectValue placeholder="すべて" /></SelectTrigger>
             <SelectContent>
@@ -114,9 +114,7 @@ export default function ApprovalListPage() {
                   </TableCell>
                   <TableCell><TimesheetStatusBadge status={item.status} /></TableCell>
                   <TableCell>
-                    <Button asChild size="sm" variant="outline">
-                      <Link to={`/attendance/timesheets/${item.id}`}>詳細</Link>
-                    </Button>
+                    <Link to={`/attendance/timesheets/${item.id}`} className={buttonVariants({ size: 'sm', variant: 'outline' })}>詳細</Link>
                   </TableCell>
                 </TableRow>
               ))}

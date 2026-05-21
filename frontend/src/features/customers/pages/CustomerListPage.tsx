@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -43,13 +43,9 @@ export default function CustomerListPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">顧客・取引先一覧</h1>
         <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm">
-            <Link to="/customers/followup"><Bell size={14} className="mr-1" />フォローアップ</Link>
-          </Button>
+          <Link to="/customers/followup" className={buttonVariants({ variant: 'outline', size: 'sm' })}><Bell size={14} className="mr-1" />フォローアップ</Link>
           {can('edit_all') && (
-            <Button asChild size="sm">
-              <Link to="/customers/new"><Plus size={14} className="mr-1" />新規登録</Link>
-            </Button>
+            <Link to="/customers/new" className={buttonVariants({ size: 'sm' })}><Plus size={14} className="mr-1" />新規登録</Link>
           )}
         </div>
       </div>
@@ -83,7 +79,7 @@ export default function CustomerListPage() {
         </div>
         <div className="w-36">
           <Label>種別</Label>
-          <Select value={params.company_type || ALL} onValueChange={(v) => update({ company_type: v === ALL ? '' : (v as CompanyType) })}>
+          <Select value={params.company_type || ALL} onValueChange={(v) => update({ company_type: (v ?? '') === ALL ? '' : ((v ?? '') as CompanyType) })}>
             <SelectTrigger><SelectValue placeholder="すべて" /></SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL}>すべて</SelectItem>
@@ -95,7 +91,7 @@ export default function CustomerListPage() {
         </div>
         <div className="w-36">
           <Label>ステータス</Label>
-          <Select value={params.status || ALL} onValueChange={(v) => update({ status: v === ALL ? '' : (v as CompanyStatus) })}>
+          <Select value={params.status || ALL} onValueChange={(v) => update({ status: (v ?? '') === ALL ? '' : ((v ?? '') as CompanyStatus) })}>
             <SelectTrigger><SelectValue placeholder="すべて" /></SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL}>すべて</SelectItem>

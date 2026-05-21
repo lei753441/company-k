@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ContractStatusBadge,
@@ -69,14 +69,10 @@ export default function ContractDetailPage() {
         </div>
         <div className="flex gap-2 flex-wrap justify-end">
           {data.status === 'renewal_due' && (
-            <Button asChild variant="outline" size="sm">
-              <Link to="/contracts/renewal-alerts"><Bell size={14} className="mr-1" />更新アラート一覧へ</Link>
-            </Button>
+            <Link to="/contracts/renewal-alerts" className={buttonVariants({ variant: 'outline', size: 'sm' })}><Bell size={14} className="mr-1" />更新アラート一覧へ</Link>
           )}
           {canEditForm && (
-            <Button asChild variant="outline" size="sm">
-              <Link to={`/contracts/${id}/edit`}><Pencil size={14} className="mr-1" />編集</Link>
-            </Button>
+            <Link to={`/contracts/${id}/edit`} className={buttonVariants({ variant: 'outline', size: 'sm' })}><Pencil size={14} className="mr-1" />編集</Link>
           )}
           {canEdit && data.status === 'draft' && (
             <Button size="sm" onClick={handleSendForSigning} disabled={sendForSigning.isPending}>

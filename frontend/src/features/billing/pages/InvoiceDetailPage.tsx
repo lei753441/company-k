@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
@@ -51,7 +51,7 @@ function ReceivePaymentSheet({
 }) {
   const receivePayment = useReceivePayment(invoiceId)
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ReceiveVals>({
-    resolver: zodResolver(receiveSchema),
+    resolver: zodResolver(receiveSchema) as Resolver<ReceiveVals>,
     defaultValues: { amount: remaining, date: new Date().toISOString().slice(0, 10) },
   })
 

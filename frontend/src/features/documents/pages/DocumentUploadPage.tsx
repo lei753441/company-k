@@ -21,7 +21,6 @@ import type { DocumentCategory } from '@/types/document'
 import { formatFileSize } from '../components/DocumentBadge'
 
 const CATEGORY_NONE = '_none_'
-const RELATED_NONE = '_none_'
 
 type RelatedType = 'employee' | 'project' | 'customer' | 'none'
 
@@ -113,8 +112,8 @@ export default function DocumentUploadPage() {
               <Select
                 value={categoryVal}
                 onValueChange={(v) => {
-                  setCategoryVal(v)
-                  if (v !== CATEGORY_NONE) setValue('category', v as DocumentCategory)
+                  setCategoryVal(v ?? '')
+                  if ((v ?? '') !== CATEGORY_NONE) setValue('category', (v ?? '') as DocumentCategory)
                 }}
               >
                 <SelectTrigger>
@@ -140,7 +139,7 @@ export default function DocumentUploadPage() {
               <Select
                 value={relatedTypeVal}
                 onValueChange={(v) => {
-                  const rt = v as RelatedType
+                  const rt = (v ?? 'none') as RelatedType
                   setRelatedTypeVal(rt)
                   setValue('related_type', rt)
                   setValue('related_name', '')

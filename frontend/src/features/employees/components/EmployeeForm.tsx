@@ -110,7 +110,7 @@ export function EmployeeForm({ defaultValues, onSubmit, isLoading, submitLabel =
           <Label htmlFor="employment_type">雇用形態 *</Label>
           <Select
             value={watch('employment_type')}
-            onValueChange={(v) => setValue('employment_type', v as EmploymentType)}
+            onValueChange={(v) => setValue('employment_type', (v ?? '') as EmploymentType)}
           >
             <SelectTrigger id="employment_type">
               <SelectValue />
@@ -126,7 +126,7 @@ export function EmployeeForm({ defaultValues, onSubmit, isLoading, submitLabel =
           <Label htmlFor="department_id">部署 *</Label>
           <Select
             value={watch('department_id') ?? ''}
-            onValueChange={(v) => setValue('department_id', v)}
+            onValueChange={(v) => setValue('department_id', v ?? '')}
           >
             <SelectTrigger id="department_id">
               <SelectValue placeholder="選択してください" />
@@ -143,7 +143,7 @@ export function EmployeeForm({ defaultValues, onSubmit, isLoading, submitLabel =
           <Label htmlFor="position_id">役職</Label>
           <Select
             value={watch('position_id') ?? ''}
-            onValueChange={(v) => setValue('position_id', v)}
+            onValueChange={(v) => setValue('position_id', v ?? '')}
           >
             <SelectTrigger id="position_id">
               <SelectValue placeholder="選択してください" />

@@ -52,7 +52,7 @@ export default function MonthlyClosePage() {
         <h1 className="text-2xl font-bold">月次締め</h1>
         <div className="w-40">
           <Label>年月</Label>
-          <Select value={yearMonth} onValueChange={(v) => { setYearMonth(v); setClosed(false) }}>
+          <Select value={yearMonth} onValueChange={(v) => { setYearMonth(v ?? ''); setClosed(false) }}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
               {yearMonthOptions.map((ym) => (

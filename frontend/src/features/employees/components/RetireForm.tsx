@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
@@ -29,12 +29,12 @@ interface Props {
 
 export function RetireForm({ onSubmit, isLoading }: Props) {
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as Resolver<FormValues>,
     defaultValues: { retirement_reason: 'voluntary', retirement_note: '' },
   })
 
   return (
-    <form onSubmit={handleSubmit((d) => onSubmit(d as RetireRequest))} className="space-y-4">
+    <form onSubmit={handleSubmit((d) => onSubmit(d as unknown as RetireRequest))} className="space-y-4">
       <div>
         <Label htmlFor="retirement_date">退職日 *</Label>
         <Input id="retirement_date" type="date" {...register('retirement_date')} />
@@ -44,7 +44,7 @@ export function RetireForm({ onSubmit, isLoading }: Props) {
         <Label htmlFor="retirement_reason">退職区分 *</Label>
         <Select
           value={watch('retirement_reason')}
-          onValueChange={(v) => setValue('retirement_reason', v as FormValues['retirement_reason'])}
+          onValueChange={(v) => setValue('retirement_reason', (v ?? '') as FormValues['retirement_reason'])}
         >
           <SelectTrigger id="retirement_reason">
             <SelectValue />

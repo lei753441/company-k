@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -46,13 +46,9 @@ export default function ContractListPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">契約一覧</h1>
         <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm">
-            <Link to="/contracts/renewal-alerts"><Bell size={14} className="mr-1" />更新アラート</Link>
-          </Button>
+          <Link to="/contracts/renewal-alerts" className={buttonVariants({ variant: 'outline', size: 'sm' })}><Bell size={14} className="mr-1" />更新アラート</Link>
           {(can('edit_all') || can('export_csv')) && (
-            <Button asChild size="sm">
-              <Link to="/contracts/new"><Plus size={14} className="mr-1" />新規作成</Link>
-            </Button>
+            <Link to="/contracts/new" className={buttonVariants({ size: 'sm' })}><Plus size={14} className="mr-1" />新規作成</Link>
           )}
         </div>
       </div>
@@ -70,7 +66,7 @@ export default function ContractListPage() {
           <Label>ステータス</Label>
           <Select
             value={params.status || ALL}
-            onValueChange={(v) => update({ status: v === ALL ? '' : (v as ContractStatus) })}
+            onValueChange={(v) => update({ status: (v ?? '') === ALL ? '' : ((v ?? '') as ContractStatus) })}
           >
             <SelectTrigger><SelectValue placeholder="すべて" /></SelectTrigger>
             <SelectContent>
@@ -85,7 +81,7 @@ export default function ContractListPage() {
           <Label>契約種別</Label>
           <Select
             value={params.contract_type || ALL}
-            onValueChange={(v) => update({ contract_type: v === ALL ? '' : (v as ContractType) })}
+            onValueChange={(v) => update({ contract_type: (v ?? '') === ALL ? '' : ((v ?? '') as ContractType) })}
           >
             <SelectTrigger><SelectValue placeholder="すべて" /></SelectTrigger>
             <SelectContent>

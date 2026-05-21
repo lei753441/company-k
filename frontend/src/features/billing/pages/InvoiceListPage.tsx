@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -41,9 +41,7 @@ export default function InvoiceListPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">請求書一覧</h1>
         {can('edit_all') && (
-          <Button asChild size="sm">
-            <Link to="/billing/invoices/new"><Plus size={14} className="mr-1" />新規作成</Link>
-          </Button>
+          <Link to="/billing/invoices/new" className={buttonVariants({ size: 'sm' })}><Plus size={14} className="mr-1" />新規作成</Link>
         )}
       </div>
 
@@ -78,7 +76,7 @@ export default function InvoiceListPage() {
         </div>
         <div className="w-40">
           <Label>ステータス</Label>
-          <Select value={params.status || ALL} onValueChange={(v) => update({ status: v === ALL ? '' : (v as InvoiceStatus) })}>
+          <Select value={params.status || ALL} onValueChange={(v) => update({ status: (v ?? '') === ALL ? '' : ((v ?? '') as InvoiceStatus) })}>
             <SelectTrigger><SelectValue placeholder="すべて" /></SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL}>すべて</SelectItem>

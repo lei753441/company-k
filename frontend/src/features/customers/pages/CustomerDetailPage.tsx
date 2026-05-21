@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -229,7 +229,7 @@ function InteractionSheet({
               <Label>方法 *</Label>
               <Select
                 value={watch('interaction_type')}
-                onValueChange={(v) => setValue('interaction_type', v as InteractionType)}
+                onValueChange={(v) => setValue('interaction_type', (v ?? '') as InteractionType)}
               >
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -311,9 +311,7 @@ export default function CustomerDetailPage() {
           </div>
         </div>
         {canEdit && (
-          <Button asChild variant="outline" size="sm">
-            <Link to={`/customers/${id}/edit`}><Pencil size={14} className="mr-1" />編集</Link>
-          </Button>
+          <Link to={`/customers/${id}/edit`} className={buttonVariants({ variant: 'outline', size: 'sm' })}><Pencil size={14} className="mr-1" />編集</Link>
         )}
       </div>
 

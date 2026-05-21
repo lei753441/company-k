@@ -63,7 +63,7 @@ export default function TimesheetListPage() {
       <div className="flex flex-wrap gap-4 p-4 bg-white rounded-lg border">
         <div className="w-40">
           <Label>年月</Label>
-          <Select value={yearMonth} onValueChange={setYearMonth}>
+          <Select value={yearMonth} onValueChange={(v) => setYearMonth(v ?? '')}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
               {yearMonthOptions.map((ym) => (
@@ -76,7 +76,7 @@ export default function TimesheetListPage() {
           <Label>ステータス</Label>
           <Select
             value={status || ALL}
-            onValueChange={(v) => setStatus(v === ALL ? '' : (v as TimesheetStatus))}
+            onValueChange={(v) => setStatus((v ?? '') === ALL ? '' : ((v ?? '') as TimesheetStatus))}
           >
             <SelectTrigger><SelectValue placeholder="すべて" /></SelectTrigger>
             <SelectContent>

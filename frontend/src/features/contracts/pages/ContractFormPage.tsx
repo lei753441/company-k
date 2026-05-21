@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
@@ -58,7 +58,7 @@ export default function ContractFormPage({ mode }: Props) {
   const updateContract = useUpdateContract(id ?? '')
 
   const { register, handleSubmit, watch, setValue, reset, formState: { errors } } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as Resolver<FormValues>,
     defaultValues: {
       contract_type: 'ses_commission',
       party_type: 'customer',
@@ -155,7 +155,7 @@ export default function ContractFormPage({ mode }: Props) {
                 <Label>契約種別 *</Label>
                 <Select
                   value={watch('contract_type')}
-                  onValueChange={(v) => setValue('contract_type', v as ContractType)}
+                  onValueChange={(v) => setValue('contract_type', (v ?? '') as ContractType)}
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -170,7 +170,7 @@ export default function ContractFormPage({ mode }: Props) {
                 <Label>当事者種別 *</Label>
                 <Select
                   value={watch('party_type')}
-                  onValueChange={(v) => setValue('party_type', v as ContractPartyType)}
+                  onValueChange={(v) => setValue('party_type', (v ?? '') as ContractPartyType)}
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -200,7 +200,7 @@ export default function ContractFormPage({ mode }: Props) {
                 <Label>ステータス</Label>
                 <Select
                   value={watch('status') ?? 'draft'}
-                  onValueChange={(v) => setValue('status', v as ContractStatus)}
+                  onValueChange={(v) => setValue('status', (v ?? '') as ContractStatus)}
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -267,7 +267,7 @@ export default function ContractFormPage({ mode }: Props) {
                   <Label>単価種別</Label>
                   <Select
                     value={watch('unit_type') || NONE}
-                    onValueChange={(v) => setValue('unit_type', v === NONE ? '' : (v as UnitType))}
+                    onValueChange={(v) => setValue('unit_type', (v ?? '') === NONE ? '' : ((v ?? '') as UnitType))}
                   >
                     <SelectTrigger><SelectValue placeholder="選択" /></SelectTrigger>
                     <SelectContent>
