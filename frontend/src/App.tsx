@@ -53,6 +53,18 @@ const FreelancerListPage = lazy(() => import('@/features/partners/pages/Freelanc
 const FreelancerDetailPage = lazy(() => import('@/features/partners/pages/FreelancerDetailPage'))
 const FreelancerFormPage = lazy(() => import('@/features/partners/pages/FreelancerFormPage'))
 
+const ContractListPage = lazy(() => import('@/features/contracts/pages/ContractListPage'))
+const ContractDetailPage = lazy(() => import('@/features/contracts/pages/ContractDetailPage'))
+const ContractFormPage = lazy(() => import('@/features/contracts/pages/ContractFormPage'))
+const ContractRenewalAlertPage = lazy(() => import('@/features/contracts/pages/ContractRenewalAlertPage'))
+
+const ExpenseListPage = lazy(() => import('@/features/expenses/pages/ExpenseListPage'))
+const ExpenseDetailPage = lazy(() => import('@/features/expenses/pages/ExpenseDetailPage'))
+const ExpenseApprovalPage = lazy(() => import('@/features/expenses/pages/ExpenseApprovalPage'))
+const ExpenseSummaryPage = lazy(() => import('@/features/expenses/pages/ExpenseSummaryPage'))
+
+const DashboardPage = lazy(() => import('@/features/dashboard/pages/DashboardPage'))
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -107,6 +119,16 @@ export default function App() {
             <Route path="freelancers/new" element={<FreelancerFormPage mode="new" />} />
             <Route path="freelancers/:id" element={<FreelancerDetailPage />} />
             <Route path="freelancers/:id/edit" element={<FreelancerFormPage mode="edit" />} />
+            <Route path="contracts" element={<ContractListPage />} />
+            <Route path="contracts/new" element={<ContractFormPage mode="new" />} />
+            <Route path="contracts/renewals" element={<ContractRenewalAlertPage />} />
+            <Route path="contracts/:id" element={<ContractDetailPage />} />
+            <Route path="contracts/:id/edit" element={<ContractFormPage mode="edit" />} />
+            <Route path="expenses" element={<ExpenseListPage />} />
+            <Route path="expenses/approval" element={<ExpenseApprovalPage />} />
+            <Route path="expenses/summary" element={<ExpenseSummaryPage />} />
+            <Route path="expenses/:id" element={<ExpenseDetailPage />} />
+            <Route path="dashboard" element={<DashboardPage />} />
           </Route>
         </Routes>
       </Suspense>

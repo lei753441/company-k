@@ -8,6 +8,9 @@ import { attendanceHandlers } from './handlers/attendance'
 import { billingHandlers } from './handlers/billing'
 import { matchingHandlers } from './handlers/matching'
 import { partnerHandlers } from './handlers/partners'
+import { contractHandlers } from './handlers/contracts'
+import { expenseHandlers } from './handlers/expenses'
+import { dashboardHandlers } from './handlers/dashboard'
 
 export const worker = setupWorker(
   ...employeeHandlers,
@@ -19,4 +22,7 @@ export const worker = setupWorker(
   ...billingHandlers,
   ...matchingHandlers,
   ...partnerHandlers,
+  ...contractHandlers,
+  ...expenseHandlers,
+  ...dashboardHandlers,
 )

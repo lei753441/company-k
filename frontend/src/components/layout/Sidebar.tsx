@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock, Receipt, CreditCard, AlertTriangle, GitMerge, List, UserCheck, UserCircle } from 'lucide-react'
+import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock, Receipt, CreditCard, AlertTriangle, GitMerge, List, UserCheck, UserCircle, ScrollText, Wallet, LayoutDashboard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navGroups = [
@@ -64,6 +64,27 @@ const navGroups = [
     items: [
       { to: '/partners', label: '協力会社', icon: UserCheck, end: true },
       { to: '/freelancers', label: 'フリーランス', icon: UserCircle, end: true },
+    ],
+  },
+  {
+    label: '契約管理',
+    items: [
+      { to: '/contracts', label: '契約一覧', icon: ScrollText, end: true },
+      { to: '/contracts/renewals', label: '更新アラート', icon: AlertTriangle, end: true },
+    ],
+  },
+  {
+    label: '経費管理',
+    items: [
+      { to: '/expenses', label: '経費申請', icon: Wallet, end: true },
+      { to: '/expenses/approval', label: '承認一覧', icon: CheckSquare, end: true },
+      { to: '/expenses/summary', label: '月次集計', icon: BarChart3, end: true },
+    ],
+  },
+  {
+    label: 'ダッシュボード',
+    items: [
+      { to: '/dashboard', label: 'ダッシュボード', icon: LayoutDashboard, end: true },
     ],
   },
 ]
