@@ -74,7 +74,7 @@ const WorkflowListPage = lazy(() => import('@/features/notifications/pages/Workf
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Suspense fallback={<div className="p-8 text-slate-500">Loading...</div>}>
         <Routes>
           <Route element={<AppLayout />}>
