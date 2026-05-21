@@ -104,13 +104,17 @@ const navGroups = [
 
 export function Sidebar() {
   return (
-    <aside className="w-56 min-h-screen bg-slate-900 text-slate-100 flex flex-col">
-      <div className="p-4 text-lg font-bold border-b border-slate-700">Company K</div>
-      <nav className="flex-1 p-2 space-y-4">
+    <aside className="w-56 min-h-screen bg-white border-r border-gray-200 flex flex-col shrink-0">
+      <div className="h-14 flex items-center px-5 border-b border-gray-200">
+        <span className="text-base font-bold text-brand-500 tracking-tight">Company K</span>
+      </div>
+      <nav className="flex-1 overflow-y-auto p-3 space-y-5">
         {navGroups.map((group) => (
           <div key={group.label}>
-            <p className="text-xs text-slate-500 uppercase tracking-wide px-3 py-1">{group.label}</p>
-            <div className="space-y-1">
+            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-3 mb-1">
+              {group.label}
+            </p>
+            <div className="space-y-0.5">
               {group.items.map(({ to, label, icon: Icon, end }) => (
                 <NavLink
                   key={to}
@@ -118,12 +122,14 @@ export function Sidebar() {
                   end={end}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-3 px-3 py-2 rounded text-sm',
-                      isActive ? 'bg-slate-700 text-white' : 'hover:bg-slate-800',
+                      'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors',
+                      isActive
+                        ? 'bg-brand-50 text-brand-500 font-medium'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
                     )
                   }
                 >
-                  <Icon size={16} />
+                  <Icon size={15} className="shrink-0" />
                   {label}
                 </NavLink>
               ))}
