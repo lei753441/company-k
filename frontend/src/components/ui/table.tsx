@@ -21,7 +21,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("bg-gray-50 [&_tr]:border-b [&_tr]:border-gray-200", className)}
+      className={cn("bg-gray-50 dark:bg-gray-800/50 [&_tr]:border-b [&_tr]:border-gray-200 dark:[&_tr]:border-gray-700", className)}
       {...props}
     />
   )
@@ -31,7 +31,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
       data-slot="table-body"
-      className={cn("divide-y divide-gray-100 [&_tr:last-child]:border-0", className)}
+      className={cn("divide-y divide-gray-100 dark:divide-gray-800 [&_tr:last-child]:border-0", className)}
       {...props}
     />
   )
@@ -55,7 +55,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "transition-colors hover:bg-gray-50 has-aria-expanded:bg-gray-50 data-[state=selected]:bg-brand-50",
+        "transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50 has-aria-expanded:bg-gray-50 data-[state=selected]:bg-brand-50",
         className
       )}
       {...props}
@@ -68,7 +68,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "px-4 py-3 text-left align-middle text-xs font-semibold uppercase tracking-wide text-gray-500 whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        "px-4 py-3 text-left align-middle text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 whitespace-nowrap [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
@@ -81,7 +81,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "px-4 py-3 align-middle text-gray-700 whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        "px-4 py-3 align-middle text-gray-700 dark:text-gray-300 whitespace-nowrap [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
