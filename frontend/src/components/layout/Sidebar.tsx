@@ -1,8 +1,11 @@
 import { NavLink } from 'react-router-dom'
-import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock, Receipt, CreditCard, AlertTriangle, GitMerge, List, UserCheck, UserCircle, ScrollText, Wallet, LayoutDashboard, FolderOpen, GitPullRequest } from 'lucide-react'
+import { type LucideIcon, Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock, Receipt, CreditCard, AlertTriangle, GitMerge, List, UserCheck, UserCircle, ScrollText, Wallet, LayoutDashboard, FolderOpen, GitPullRequest } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const navGroups = [
+type NavItem = { to: string; label: string; icon: LucideIcon; end?: boolean }
+type NavGroup = { label: string; items: NavItem[] }
+
+const navGroups: NavGroup[] = [
   {
     label: '社員管理',
     items: [
