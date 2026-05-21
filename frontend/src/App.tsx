@@ -65,6 +65,13 @@ const ExpenseSummaryPage = lazy(() => import('@/features/expenses/pages/ExpenseS
 
 const DashboardPage = lazy(() => import('@/features/dashboard/pages/DashboardPage'))
 
+const DocumentListPage = lazy(() => import('@/features/documents/pages/DocumentListPage'))
+const DocumentDetailPage = lazy(() => import('@/features/documents/pages/DocumentDetailPage'))
+const DocumentUploadPage = lazy(() => import('@/features/documents/pages/DocumentUploadPage'))
+
+const NotificationListPage = lazy(() => import('@/features/notifications/pages/NotificationListPage'))
+const WorkflowListPage = lazy(() => import('@/features/notifications/pages/WorkflowListPage'))
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -129,6 +136,11 @@ export default function App() {
             <Route path="expenses/summary" element={<ExpenseSummaryPage />} />
             <Route path="expenses/:id" element={<ExpenseDetailPage />} />
             <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="documents" element={<DocumentListPage />} />
+            <Route path="documents/upload" element={<DocumentUploadPage />} />
+            <Route path="documents/:id" element={<DocumentDetailPage />} />
+            <Route path="notifications" element={<NotificationListPage />} />
+            <Route path="workflows" element={<WorkflowListPage />} />
           </Route>
         </Routes>
       </Suspense>

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock, Receipt, CreditCard, AlertTriangle, GitMerge, List, UserCheck, UserCircle, ScrollText, Wallet, LayoutDashboard } from 'lucide-react'
+import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock, Receipt, CreditCard, AlertTriangle, GitMerge, List, UserCheck, UserCircle, ScrollText, Wallet, LayoutDashboard, FolderOpen, GitPullRequest } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navGroups = [
@@ -79,6 +79,19 @@ const navGroups = [
       { to: '/expenses', label: '経費申請', icon: Wallet, end: true },
       { to: '/expenses/approval', label: '承認一覧', icon: CheckSquare, end: true },
       { to: '/expenses/summary', label: '月次集計', icon: BarChart3, end: true },
+    ],
+  },
+  {
+    label: '書類管理',
+    items: [
+      { to: '/documents', label: '書類一覧', icon: FolderOpen, end: true },
+    ],
+  },
+  {
+    label: 'ワークフロー',
+    items: [
+      { to: '/workflows', label: '承認タスク', icon: GitPullRequest, end: true },
+      { to: '/notifications', label: '通知一覧', icon: Bell, end: true },
     ],
   },
   {

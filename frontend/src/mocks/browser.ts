@@ -11,6 +11,8 @@ import { partnerHandlers } from './handlers/partners'
 import { contractHandlers } from './handlers/contracts'
 import { expenseHandlers } from './handlers/expenses'
 import { dashboardHandlers } from './handlers/dashboard'
+import { documentHandlers } from './handlers/documents'
+import { notificationHandlers } from './handlers/notifications'
 
 export const worker = setupWorker(
   ...employeeHandlers,
@@ -25,4 +27,6 @@ export const worker = setupWorker(
   ...contractHandlers,
   ...expenseHandlers,
   ...dashboardHandlers,
+  ...documentHandlers,
+  ...notificationHandlers,
 )
