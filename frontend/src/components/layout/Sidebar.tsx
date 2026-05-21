@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock } from 'lucide-react'
+import { Users, Building2, FileText, Activity, Search, Briefcase, Building, Bell, Clock, CalendarDays, Umbrella, CheckSquare, BarChart3, Lock, Receipt, CreditCard, AlertTriangle, GitMerge, List, UserCheck, UserCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navGroups = [
@@ -40,6 +40,30 @@ const navGroups = [
       { to: '/attendance/approval', label: '承認一覧', icon: CheckSquare, end: true },
       { to: '/attendance/summary', label: '月次集計', icon: BarChart3, end: true },
       { to: '/attendance/close', label: '月次締め', icon: Lock, end: true },
+    ],
+  },
+  {
+    label: '請求・支払',
+    items: [
+      { to: '/billing/invoices', label: '請求書', icon: Receipt, end: true },
+      { to: '/billing/payments', label: '支払管理', icon: CreditCard, end: true },
+      { to: '/billing/receivables', label: '未入金管理', icon: AlertTriangle, end: true },
+      { to: '/billing/summary', label: '月次集計', icon: BarChart3, end: true },
+      { to: '/billing/close', label: '月次締め', icon: Lock, end: true },
+    ],
+  },
+  {
+    label: 'マッチング',
+    items: [
+      { to: '/matching', label: 'マッチング検索', icon: GitMerge, end: true },
+      { to: '/matching/proposals', label: '提案リスト', icon: List, end: true },
+    ],
+  },
+  {
+    label: '協力会社・FL',
+    items: [
+      { to: '/partners', label: '協力会社', icon: UserCheck, end: true },
+      { to: '/freelancers', label: 'フリーランス', icon: UserCircle, end: true },
     ],
   },
 ]

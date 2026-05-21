@@ -34,6 +34,25 @@ const MonthlySummaryPage = lazy(() => import('@/features/attendance/pages/Monthl
 const MonthlyClosePage = lazy(() => import('@/features/attendance/pages/MonthlyClosePage'))
 const LeaveListPage = lazy(() => import('@/features/attendance/pages/LeaveListPage'))
 
+const InvoiceListPage = lazy(() => import('@/features/billing/pages/InvoiceListPage'))
+const InvoiceDetailPage = lazy(() => import('@/features/billing/pages/InvoiceDetailPage'))
+const PaymentListPage = lazy(() => import('@/features/billing/pages/PaymentListPage'))
+const PaymentDetailPage = lazy(() => import('@/features/billing/pages/PaymentDetailPage'))
+const ReceivablesPage = lazy(() => import('@/features/billing/pages/ReceivablesPage'))
+const BillingClosePage = lazy(() => import('@/features/billing/pages/BillingClosePage'))
+const BillingSummaryPage = lazy(() => import('@/features/billing/pages/BillingSummaryPage'))
+
+const MatchingSearchPage = lazy(() => import('@/features/matching/pages/MatchingSearchPage'))
+const ProposalListPage = lazy(() => import('@/features/matching/pages/ProposalListPage'))
+const ProposalDetailPage = lazy(() => import('@/features/matching/pages/ProposalDetailPage'))
+
+const PartnerListPage = lazy(() => import('@/features/partners/pages/PartnerListPage'))
+const PartnerDetailPage = lazy(() => import('@/features/partners/pages/PartnerDetailPage'))
+const PartnerFormPage = lazy(() => import('@/features/partners/pages/PartnerFormPage'))
+const FreelancerListPage = lazy(() => import('@/features/partners/pages/FreelancerListPage'))
+const FreelancerDetailPage = lazy(() => import('@/features/partners/pages/FreelancerDetailPage'))
+const FreelancerFormPage = lazy(() => import('@/features/partners/pages/FreelancerFormPage'))
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -70,6 +89,24 @@ export default function App() {
             <Route path="attendance/summary" element={<MonthlySummaryPage />} />
             <Route path="attendance/close" element={<MonthlyClosePage />} />
             <Route path="attendance/leaves" element={<LeaveListPage />} />
+            <Route path="billing/invoices" element={<InvoiceListPage />} />
+            <Route path="billing/invoices/:id" element={<InvoiceDetailPage />} />
+            <Route path="billing/payments" element={<PaymentListPage />} />
+            <Route path="billing/payments/:id" element={<PaymentDetailPage />} />
+            <Route path="billing/receivables" element={<ReceivablesPage />} />
+            <Route path="billing/close" element={<BillingClosePage />} />
+            <Route path="billing/summary" element={<BillingSummaryPage />} />
+            <Route path="matching" element={<MatchingSearchPage />} />
+            <Route path="matching/proposals" element={<ProposalListPage />} />
+            <Route path="matching/proposals/:id" element={<ProposalDetailPage />} />
+            <Route path="partners" element={<PartnerListPage />} />
+            <Route path="partners/new" element={<PartnerFormPage mode="new" />} />
+            <Route path="partners/:id" element={<PartnerDetailPage />} />
+            <Route path="partners/:id/edit" element={<PartnerFormPage mode="edit" />} />
+            <Route path="freelancers" element={<FreelancerListPage />} />
+            <Route path="freelancers/new" element={<FreelancerFormPage mode="new" />} />
+            <Route path="freelancers/:id" element={<FreelancerDetailPage />} />
+            <Route path="freelancers/:id/edit" element={<FreelancerFormPage mode="edit" />} />
           </Route>
         </Routes>
       </Suspense>

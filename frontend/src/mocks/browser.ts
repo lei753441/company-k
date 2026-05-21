@@ -5,5 +5,18 @@ import { skillHandlers } from './handlers/skills'
 import { projectHandlers } from './handlers/projects'
 import { customerHandlers } from './handlers/customers'
 import { attendanceHandlers } from './handlers/attendance'
+import { billingHandlers } from './handlers/billing'
+import { matchingHandlers } from './handlers/matching'
+import { partnerHandlers } from './handlers/partners'
 
-export const worker = setupWorker(...employeeHandlers, ...departmentHandlers, ...skillHandlers, ...projectHandlers, ...customerHandlers, ...attendanceHandlers)
+export const worker = setupWorker(
+  ...employeeHandlers,
+  ...departmentHandlers,
+  ...skillHandlers,
+  ...projectHandlers,
+  ...customerHandlers,
+  ...attendanceHandlers,
+  ...billingHandlers,
+  ...matchingHandlers,
+  ...partnerHandlers,
+)
